@@ -7,6 +7,7 @@
 #                 return i
 
 def find_smallest(numbers,to_return):
+    """Находим минимальный элемент"""
     return min(numbers) if to_return == 'value' else numbers.index(min(numbers))
 
 
