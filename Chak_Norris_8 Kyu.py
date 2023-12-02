@@ -1,6 +1,6 @@
 
 def if_chuck_says_so():
-    x = 1
-    return x == 0
+    """Задачка 8 кю Чак Норрис"""
+    return not True
 
 print(if_chuck_says_so())
