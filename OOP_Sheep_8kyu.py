@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 class Ship:
     """Класс корабль: наполнение и экипаж"""
     def __init__(self, draft, crew):
@@ -7,7 +7,5 @@ class Ship:
 
     def is_worth_it(self):
         return self.draft > self.crew * 1.5 + 20
-
-
 
 Titanic = Ship(100, 20)
