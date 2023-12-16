@@ -19,6 +19,11 @@ def gps(s, x):
         # возврат максимального и округленного значения средней скорости
     return  round(max(average_speed_list))
 
+# В одну строчку
+# def gps(s, x):
+#     return max(((x[i] - x[i - 1]) * 3600 / s for i in range(len(x))), default=0)
+
+
 x = [0.0, 0.11, 0.22, 0.33, 0.44, 0.65, 1.08, 1.26, 1.68, 1.89, 2.1, 2.31, 2.52, 3.25]
 s = 12
 print(gps(s, x))
