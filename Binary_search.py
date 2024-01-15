@@ -24,4 +24,4 @@ def binary_search(search_list, number):
 
 my_list = [1, 3, 5, 7, 9]
 
-print(f"число стоит на позиции с индексом: {binary_search(my_list, 7)}")
+print(f"Искомое число стоит на позиции с индексом: {binary_search(my_list, 7)}")
