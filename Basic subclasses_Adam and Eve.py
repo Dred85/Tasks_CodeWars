@@ -1,21 +1,11 @@
 class Human:
-    def __init__(self, name, age):
-
-        self.name = name
-        self.age = age
-
+    pass
 class Man(Human):
 
-    def __init__(self, name, age):
-
-        Human.__init__(self, name, age)
-        self.gender ='male'
+   pass
 class Woman(Human):
 
-    def __init__(self, name, age):
-
-        Human.__init__(self, name, age)
-        self.gender = 'female'
+    pass
 
 def God():
-    return [Man('Иванов', 30), Woman('Иванов', 20  )]
+    return [Man(), Woman()]
