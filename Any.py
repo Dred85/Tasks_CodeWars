@@ -1,27 +1,16 @@
-# Бинарный поиск. [O(log n)]
+import asyncio
 
-def binary_search(search_list, number):
+async def func():
+    print("A")
+    await asyncio.sleep(5)  # Не блокирует, просто "ждёт"
+    print("B")
 
-    low = 0
-    high = len(search_list) - 1
+async def main():
+    print("Я тебя опередил!")
 
+# asyncio.run(main())
 
-    while low <= high:
+async def plan():
+    await asyncio.gather(func(), main())
 
-        mid = (low + high) // 2
-        guess = search_list[mid]
-
-        if guess == number:
-            return mid
-
-        if guess > number:
-            high = mid - 1
-
-        else:
-            low = mid + 1
-
-    return None
-
-my_list = [1, 3, 5, 7, 9]
-
-print(f"число стоит на позиции с индексом: {binary_search(my_list, 5)}")
+asyncio.run(plan())
