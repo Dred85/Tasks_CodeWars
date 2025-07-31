@@ -1,0 +1,36 @@
+1)расчет выручки
+Есть две таблицы:
+таблица продаж (sales), в которой содержится информация о дате продажи, магазина, артикуле, который продали и количество проданных штук данного артикула.
+вторая таблица (prices) - справочник цен, в котором есть информация по ценам всех артикулов.
+Напишите запрос, который посчитает сумму продаж по 100-му магазину за 1 января 2024 года.
+
+Поля в результирующей таблице: total_revenue.
+
+select sum(s.quantity*p.price) as total_revenue from sales s
+join prices p on s.art = p.art
+where shop = 100 AND s.datetime >= '2024-01-01' AND s.datetime < '2024-01-02';
+
+2)Преподаватели выпускных классов
+Выведите идентификаторы преподавателей, у которых есть хотя бы одно занятие в каждом одиннадцатом классе.
+Поля в результирующей таблице: teacher.
+
+SELECT s.teacher
+FROM schedule s
+JOIN class c ON c.id = s.class
+WHERE c.name LIKE '11%'
+GROUP BY s.teacher
+HAVING COUNT(DISTINCT c.name) = (
+    SELECT COUNT(DISTINCT name)
+    FROM class
+    WHERE name LIKE '11%'
+);
+
+3) Страна с наибольшим количеством языков
+Найдите страну, в которой используется наибольшее количество различных языков, и выведите её название.
+Поля в результирующей таблице: name.
+
+select c.name from countries c
+join country_languages cl on cl.country_code = c.code
+GROUP BY c.name
+order by count(distinct cl.language) desc
+limit 1
