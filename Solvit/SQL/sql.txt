@@ -34,3 +34,70 @@ join country_languages cl on cl.country_code = c.code
 GROUP BY c.name
 order by count(distinct cl.language) desc
 limit 1
+
+4)Дана таблица clickstream со следующими полями:
+sid_long — идентификатор устройства;
+user_id — идентификатор пользователя;
+action — действие.
+Напишите SQL-запрос, который вернёт все уникальные пары (sid_long, user_id), удовлетворяющие условиям:
+исключить все sid_long, у которых встречаются две и более различных user_id.
+исключить все user_id, у которых в таблице обнаруживается более 7 уникальных sid_long.
+Отсортируйте результат в произвольном порядке.
+Поля в результирующей таблице: sid_long, user_id.
+
+SELECT DISTINCT c.sid_long, c.user_id
+FROM clickstream c
+-- оставляем только sid_long, привязанные к одному user_id
+WHERE c.sid_long IN (
+    SELECT sid_long
+    FROM clickstream
+    GROUP BY sid_long
+    HAVING COUNT(DISTINCT user_id) = 1
+)
+-- оставляем только user_id, которые встречаются максимум с 7 различными sid_long
+AND c.user_id IN (
+    SELECT user_id
+    FROM clickstream
+    GROUP BY user_id
+    HAVING COUNT(DISTINCT sid_long) <= 7
+);
+5)Список стран по населению
+Напишите SQL запрос, который:
+Определяет для каждой страны суммарное население всех её городов
+Сортирует страны по убыванию этого показателя (total_population)
+Добавляет столбец с разницей в населении между текущей и следующей страной (для последней 0)
+Поля в результирующей таблице: country_name, total_population, population_diff.
+SELECT
+    country_name,
+    total_population,
+    COALESCE(total_population - LEAD(total_population) OVER (ORDER BY total_population DESC), 0) AS population_diff
+FROM (
+    SELECT
+        c.name AS country_name,
+        SUM(ct.population) AS total_population
+    FROM
+        countries c
+    JOIN
+        cities ct ON c.code = ct.country_code
+    GROUP BY
+        c.name
+) AS sub
+ORDER BY
+    total_population DESC;
+
+6) Удалить ботов
+Вывести id тех пользователей, которые считаются ботами. Предполагается, что если кто-то зарегистрировался с email, который уже есть в базе, то это бот.
+Столбцы в ответе: id.
+SELECT id
+FROM users u
+WHERE email IN (
+    SELECT email
+    FROM users
+    GROUP BY email
+    HAVING COUNT(*) > 1
+)
+AND id NOT IN (
+    SELECT MIN(id)
+    FROM users
+    GROUP BY email
+);
