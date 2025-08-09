@@ -101,3 +101,67 @@ AND id NOT IN (
     FROM users
     GROUP BY email
 );
+7) Сотрудники с похожими зарплатами
+Выведите id сотрудников с разницей в заработной плате в пределах 5000 рублей.
+Пример результирующей таблицы:
++----+----+
+|id1 |id2 |
++----+----+
+| 1  | 2  |
+| 1  | 3  |
+| 2  | 5  |
+| 3  | 6  |
+| 4  | 10 |
++---------+
+select e.id id1, em.id id2 from employees e
+join employees em on e.id < em.id
+where ABS(em.salary - e.salary) <= 5000;
+
+8)Заказы пользователей
+Найти пользователей, которые совершили заказы на товары из категории 'Electronics', с указанием общей суммы заказов по этой категории.
+Ответ должен содержать поля:
+user_id
+user_name
+total_order_value
+
+SELECT
+    u.id AS user_id,
+    u.name AS user_name,
+    SUM(p.price * o.quantity) AS total_order_value
+FROM
+    orders o
+JOIN
+    users u ON o.user_id = u.id
+JOIN
+    products p ON o.product_id = p.id
+JOIN
+    categories c ON p.category_id = c.id
+WHERE
+    c.name = 'Electronics'
+GROUP BY
+    u.id, u.name;
+9) Последняя цена валюты
+Напишите запрос, который выдаст последнюю цену каждой валюты.
+Поля в результирующей таблице: name, price.
+
+select distinct on(name) name, price from currency c
+order by name, date desc
+
+10)Группа товаров
+Выведите список производителей, у которых есть хотя бы один продукт с ценой выше 30000 рублей. Для каждого производителя покажите количество таких продуктов.
+Поля в результирующей таблице: company, product_count.
+
+select company, count(product_count) as product_count from products
+where price > 30000
+GROUP BY company;
+11) Население каждого региона
+Посчитайте население каждого региона. В качестве результата выведите название региона и его численность населения.
+Поля в результирующей таблице: region_name, total_population
+
+select r.name as region_name, sum(population) as total_population from regions r
+join cities c on r.id = c.regionid
+group by r.name
+12) Лучшие авторы бестселлеров
+Постройте запрос, чтобы вычислить 5 авторов с самым большим количеством всех их проданных книг.
+Поля в результирующей таблице: author_id, author_name, total_books_sold.
+Результат необходимо отсортировать по убыванию total_books_sold.
